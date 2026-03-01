@@ -4,7 +4,6 @@ import { healthCheck, getStats } from '../services/api';
 export default function HealthMonitor() {
   const [health, setHealth] = useState(null);
   const [stats, setStats] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [lastCheck, setLastCheck] = useState(null);
 
   const checkHealth = async () => {
@@ -15,7 +14,7 @@ export default function HealthMonitor() {
     } catch (e) {
       setHealth({ status: 'unhealthy', error: e.error || 'Backend unreachable' });
     } finally {
-      setLoading(false);
+    
       setLastCheck(new Date());
     }
   };

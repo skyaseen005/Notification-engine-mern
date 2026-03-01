@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { getDecisions } from '../services/api';
 
 export default function AuditLog() {
@@ -8,23 +8,27 @@ export default function AuditLog() {
   const [total, setTotal] = useState(0);
   const [expanded, setExpanded] = useState(null);
 
-  useEffect(() => {
-    fetchDecisions();
-  }, [filters]);
 
-  const fetchDecisions = async () => {
-    setLoading(true);
-    try {
-      const params = Object.fromEntries(Object.entries(filters).filter(([_, v]) => v !== ''));
-      const data = await getDecisions(params);
-      setDecisions(data.decisions || []);
-      setTotal(data.total || 0);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-    }
-  };
+const fetchDecisions = useCallback(async () => {
+  setLoading(true);
+  try {
+    const params = Object.fromEntries(
+      Object.entries(filters).filter(([_, v]) => v !== '')
+    );
+    const data = await getDecisions(params);
+    setDecisions(data.decisions || []);
+    setTotal(data.total || 0);
+  } catch (e) {
+    console.error(e);
+  } finally {
+    setLoading(false);
+  }
+}, [filters]);
+
+useEffect(() => {
+  fetchDecisions();
+}, [fetchDecisions]);
+
 
   const pathColor = { rule_engine: '#6366f1', ai_module: '#a78bfa', fallback: '#f59e0b', hybrid: '#06b6d4' };
 

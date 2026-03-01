@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { getStats } from '../services/api';
 
-const COLORS = { NOW: '#6ee7b7', LATER: '#93c5fd', NEVER: '#fca5a5' };
+
 
 export default function Dashboard() {
   const [stats, setStats] = useState(null);
@@ -34,7 +34,7 @@ export default function Dashboard() {
   ] : [];
 
   const channelData = (stats?.by_channel || []).map(c => ({ name: c._id || 'unknown', count: c.count }));
-  const priorityData = (stats?.by_priority || []).map(p => ({ name: p._id || 'unknown', count: p.count }));
+ 
 
   return (
     <div className="page">
